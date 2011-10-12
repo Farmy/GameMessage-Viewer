@@ -13,22 +13,6 @@ namespace GameMessageViewer
 {
     class BufferNode : TreeNode, HighlightingNode
     {
-        static Dictionary<string, string> SNOAliases;
-
-        static BufferNode()
-        {
-            SNOAliases = new Dictionary<string, string>();
-
-            try
-            {
-                foreach (string filename in new string[] { "Actors.txt", "Mobs.txt", "Powers.txt", "Scenes.txt" })
-                    foreach (string entry in File.ReadAllLines(filename))
-                        if(SNOAliases.ContainsKey(entry.Split(' ')[0]) == false)
-                            SNOAliases.Add(entry.Split(' ')[0], entry.Split(' ')[1]);
-            }
-            catch (Exception) { System.Diagnostics.Debugger.Break(); }
-        }
-
 
 
         public Buffer Buffer;
@@ -117,7 +101,7 @@ namespace GameMessageViewer
 
 
                                 string name;
-                                SNOAliases.TryGetValue((message as ACDEnterKnownMessage).ActorSNO.ToString(), out name);
+                                SNOAliases.Aliases.TryGetValue((message as ACDEnterKnownMessage).ActorSNO.ToString(), out name);
 
                                 if (!actors.Nodes.ContainsKey(hex))
                                 {

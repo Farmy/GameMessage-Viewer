@@ -47,6 +47,7 @@
             this.findAllMessagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.trySNOAliasesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -173,8 +174,9 @@
             // 
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.messageFilterToolStripMenuItem,
+            this.findAllMessagesToolStripMenuItem,
             this.toolStripMenuItem1,
-            this.findAllMessagesToolStripMenuItem});
+            this.trySNOAliasesToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
@@ -212,6 +214,15 @@
             this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(115, 22);
             this.aboutToolStripMenuItem1.Text = "About...";
             this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.aboutToolStripMenuItem1_Click);
+            // 
+            // trySNOAliasesToolStripMenuItem
+            // 
+            this.trySNOAliasesToolStripMenuItem.Checked = true;
+            this.trySNOAliasesToolStripMenuItem.CheckOnClick = true;
+            this.trySNOAliasesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.trySNOAliasesToolStripMenuItem.Name = "trySNOAliasesToolStripMenuItem";
+            this.trySNOAliasesToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.trySNOAliasesToolStripMenuItem.Text = "Try SNO Aliases";
             // 
             // MessageViewer
             // 
@@ -256,6 +267,7 @@
         private System.Windows.Forms.ToolStripMenuItem rawByteDumpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem trySNOAliasesToolStripMenuItem;
 
     }
 }

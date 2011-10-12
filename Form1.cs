@@ -320,6 +320,32 @@ namespace GameMessageViewer
             temp.Size = output.Size;
             temp.Location = output.Location;
             output.Rtf = temp.Rtf;
+
+            string[] words = output.Text.Split(new string[] {"0x", " ", "\n"}, StringSplitOptions.RemoveEmptyEntries); // .Split(' ');
+            List<string> usedKeys = new List<string>();
+
+            // Bruteforce replacement of snos to their aliases
+            if (trySNOAliasesToolStripMenuItem.Checked)
+                foreach (string word in words)
+                    if (word.Length > 5)
+                    {
+                        try
+                        {
+                            //string raw = word.Replace("\n", "").Replace("0x", "");
+                            int id = 0;
+                            if (Int32.TryParse(word, System.Globalization.NumberStyles.HexNumber, null, out id))
+                            {
+                                if (usedKeys.Contains(id.ToString()) == false)
+                                {
+                                    usedKeys.Add(id.ToString());
+                                    string alias = "";
+                                    if (SNOAliases.Aliases.TryGetValue(id.ToString(), out alias))
+                                        output.Rtf = output.Rtf.Replace(word, word + ":" + alias);
+                                }
+                            }
+                        }
+                        catch (Exception) { }
+                    }
         }
 
         private void pcapDumpToolStripMenuItem_Click(object sender, EventArgs e)
