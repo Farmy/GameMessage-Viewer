@@ -77,9 +77,12 @@
             // 
             this.output.Location = new System.Drawing.Point(402, 394);
             this.output.Name = "output";
+            this.output.ReadOnly = true;
             this.output.Size = new System.Drawing.Size(446, 497);
             this.output.TabIndex = 3;
             this.output.Text = "";
+            this.output.MouseClick += new System.Windows.Forms.MouseEventHandler(this.output_MouseClick);
+            this.output.MouseMove += new System.Windows.Forms.MouseEventHandler(this.output_MouseMove);
             // 
             // actors
             // 
@@ -133,6 +136,7 @@
             // 
             // pCapPreparsedDumpToolStripMenuItem
             // 
+            this.pCapPreparsedDumpToolStripMenuItem.Enabled = false;
             this.pCapPreparsedDumpToolStripMenuItem.Name = "pCapPreparsedDumpToolStripMenuItem";
             this.pCapPreparsedDumpToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.pCapPreparsedDumpToolStripMenuItem.Text = "Pcap preparsed txt...";
@@ -140,16 +144,17 @@
             // 
             // pcapDumpToolStripMenuItem
             // 
-            this.pcapDumpToolStripMenuItem.Enabled = false;
             this.pcapDumpToolStripMenuItem.Name = "pcapDumpToolStripMenuItem";
             this.pcapDumpToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.pcapDumpToolStripMenuItem.Text = "Pcap dump...";
+            this.pcapDumpToolStripMenuItem.Click += new System.EventHandler(this.pcapDumpToolStripMenuItem_Click);
             // 
             // rawByteDumpToolStripMenuItem
             // 
             this.rawByteDumpToolStripMenuItem.Name = "rawByteDumpToolStripMenuItem";
             this.rawByteDumpToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.rawByteDumpToolStripMenuItem.Text = "Raw byte dump...";
+            this.rawByteDumpToolStripMenuItem.Text = "Mooege GS Dump...";
+            this.rawByteDumpToolStripMenuItem.Click += new System.EventHandler(this.rawByteDumpToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -204,7 +209,7 @@
             // aboutToolStripMenuItem1
             // 
             this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
-            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(115, 22);
             this.aboutToolStripMenuItem1.Text = "About...";
             this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.aboutToolStripMenuItem1_Click);
             // 

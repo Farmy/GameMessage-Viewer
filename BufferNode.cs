@@ -13,7 +13,23 @@ namespace GameMessageViewer
 {
     class BufferNode : TreeNode, HighlightingNode
     {
-        static string[] actorsString = File.ReadAllLines("actors.txt");
+        static Dictionary<string, string> SNOAliases;
+
+        static BufferNode()
+        {
+            SNOAliases = new Dictionary<string, string>();
+
+            try
+            {
+                foreach (string filename in new string[] { "Actors.txt", "Mobs.txt", "Powers.txt", "Scenes.txt" })
+                    foreach (string entry in File.ReadAllLines(filename))
+                        if(SNOAliases.ContainsKey(entry.Split(' ')[0]) == false)
+                            SNOAliases.Add(entry.Split(' ')[0], entry.Split(' ')[1]);
+            }
+            catch (Exception) { System.Diagnostics.Debugger.Break(); }
+        }
+
+
 
         public Buffer Buffer;
         public int Start;
@@ -98,10 +114,16 @@ namespace GameMessageViewer
                             if (message is ACDEnterKnownMessage)
                             {
                                 String hex = (message as ACDEnterKnownMessage).ActorID.ToString("X8");
-                                var name = from a in actorsString where int.Parse(a.Split()[0]) == (message as ACDEnterKnownMessage).ActorSNO select a.Split()[1];
 
-                                TreeNode actorNode = actors.Nodes.Add(hex, hex + "   " + name.FirstOrDefault());
-                                actorNode.Tag = hex;
+
+                                string name;
+                                SNOAliases.TryGetValue((message as ACDEnterKnownMessage).ActorSNO.ToString(), out name);
+
+                                if (!actors.Nodes.ContainsKey(hex))
+                                {
+                                    TreeNode actorNode = actors.Nodes.Add(hex, hex + "   " + name);
+                                    actorNode.Tag = hex;
+                                }
                             }
 
 
@@ -155,7 +177,7 @@ namespace GameMessageViewer
             input.SelectionStart = Start;
             input.SelectionLength = Buffer.Length % 4 == 0 ? Buffer.Length >> 2 : (Buffer.Length >> 2) + 1;
             input.SelectionBackColor = this.BackColor;
-
+            
             foreach (HighlightingNode node in Nodes)
                 node.Highlight(input, Color.LightGreen);
 

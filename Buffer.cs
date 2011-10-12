@@ -32,9 +32,6 @@ namespace GameMessageViewer
             MessageTypes["AssignSkillMessage1"] = typeof(AssignActiveSkillMessage);
             MessageTypes["AssignSkillMessage2"] = typeof(AssignPassiveSkillMessage);
 
-            MessageTypes["AssignSkillMessage3"] = typeof(AssignSkillMessage);
-            MessageTypes["AssignSkillMessage4"] = typeof(AssignSkillMessage);
-
         }
 
         public static GameMessage ParseMessage(GameBitBuffer buffer)

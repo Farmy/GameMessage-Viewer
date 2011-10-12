@@ -16,14 +16,29 @@ namespace GameMessageViewer
 
         public void Highlight(RichTextBox r)
         {
+            this.BackColor = Color.Yellow;
             Highlight(r, Color.Green);
         }
 
         public void Unhighlight(RichTextBox r)
         {
+            this.BackColor = Color.White;
             (Parent as HighlightingNode).Highlight(r);
         }
 
+        /*
+        public void MarkAsFound()
+        {
+            this.Parent.Expand();
+            this.Parent.BackColor = Color.Yellow;
+            this.BackColor = Color.Yellow;
+        }
+
+        public void SetToNormal()
+        {
+            this.BackColor = Color.White;
+        }
+         */
 
         public void Highlight(RichTextBox input, Color color)
         {
