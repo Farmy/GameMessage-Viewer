@@ -14,6 +14,17 @@ namespace GameMessageViewer
         public int mStart;
         public int mEnd;
 
+        public MessageNode clone()
+        {
+            return new MessageNode()
+            {
+                Text = this.Text,
+                gameMessage = this.gameMessage,
+                mStart = this.mStart,
+                mEnd = this.mEnd
+            };
+        }
+
         public void Highlight(RichTextBox r)
         {
             this.BackColor = Color.Yellow;

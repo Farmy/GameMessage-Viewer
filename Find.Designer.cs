@@ -76,6 +76,7 @@
             this.Name = "Find";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Find all messages of type";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Find_FormClosed);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Find_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();

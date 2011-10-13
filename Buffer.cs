@@ -17,7 +17,9 @@ namespace GameMessageViewer
     /// </summary>
     class GameMessageProxy
     {
-        static Dictionary<string, Type> MessageTypes = new Dictionary<string,Type>();
+        //static Dictionary<string, Type> MessageTypes = new Dictionary<string,Type>();
+        private static readonly Dictionary<Opcodes, Type> MessageTypes = new Dictionary<Opcodes, Type>();
+
 
         // Load all types in the AppDomain that inherit from GameMessage
         static GameMessageProxy()
@@ -25,44 +27,38 @@ namespace GameMessageViewer
             foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
                 foreach (Type type in assembly.GetTypes())
                     if (type.IsSubclassOf(typeof(GameMessage)) || type == typeof(HeroStateData))
-                        MessageTypes.Add(type.Name, type);
+                    {
+                        var attributes = (MessageAttribute[])type.GetCustomAttributes(typeof(MessageAttribute), true);
+                        if (attributes.Length == 0) continue;
+                        foreach (MessageAttribute attribute in attributes)
+                        {
+                            foreach (var opcode in attribute.Opcodes)
+                            {
+                                MessageTypes.Add(opcode, type);
+                            }
+                        }
 
-            // Workarounds of Opcodes not having the same Name as treating class
-            MessageTypes["HeroStateData"] = typeof(GenericBlobMessage);
-            MessageTypes["AssignSkillMessage1"] = typeof(AssignActiveSkillMessage);
-            MessageTypes["AssignSkillMessage2"] = typeof(AssignPassiveSkillMessage);
-
+                    }
         }
 
         public static GameMessage ParseMessage(GameBitBuffer buffer)
         {
-            GameMessage message = GameMessage.ParseMessage(buffer);
-            if (message == null)
+            GameMessage msg = null;
+
+            Opcodes opcode = (Opcodes)buffer.ReadInt(9);
+            if (MessageTypes.ContainsKey(opcode))
             {
-                // If a Message could not be parsed, try finding a Message with the same name as the opcode
-                buffer.Position -= 9;
-                Opcodes opcode = (Opcodes)buffer.ReadInt(9);
-
-                string name = opcode.ToString();
-                if (MessageTypes.ContainsKey(name) == false)
-                    for (int i = 0; i < 10; i++)
-                        name = name.Replace(i.ToString(), "");
-
-                // Create uninitialized Message (some classes dont have ctor without arguments)
-                Type type = MessageTypes[name];
-                var msg = FormatterServices.GetUninitializedObject(type);
-                (msg as GameMessage).Id = (int)opcode;
-                (msg as GameMessage).Parse(buffer);
-
-                return msg as GameMessage;
+                msg = (GameMessage)FormatterServices.GetUninitializedObject(MessageTypes[opcode]);
+                msg.Id = (int)opcode;
+                msg.Parse(buffer);
             }
 
-            return message;
+            return msg as GameMessage;
         }
     }
 
     /// <summary>
-    /// Proxys a buffer, so messages created here dont use the Incoming-attribute
+    /// Proxys a buffer, so messages created when parsing the buffer dont use the Incoming-attribute
     /// </summary>
     class Buffer : GameBitBuffer
     {

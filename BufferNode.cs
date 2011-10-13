@@ -8,17 +8,17 @@ using Mooege.Net.GS.Message.Definitions.ACD;
 using System.Drawing;
 using System.IO;
 using Mooege.Net.GS.Message.Definitions.Misc;
+using Mooege.Net.GS.Message.Definitions.Quest;
 
 namespace GameMessageViewer
 {
     class BufferNode : TreeNode, HighlightingNode
     {
-
-
         public Buffer Buffer;
         public int Start;
         private bool expanded = false;
-        private TreeView actors;
+        private TreeView actors; // i know...bad design
+        private TreeView quests; // i know...bad design
         private List<MessageNode> allNodes = new List<MessageNode>();
 
         public void ApplyFilter(Dictionary<string, bool> filter)
@@ -30,10 +30,11 @@ namespace GameMessageViewer
                     Nodes.Add(node);
         }
 
-        public BufferNode(Buffer buffer, TreeView actors)
+        public BufferNode(Buffer buffer, TreeView actors, TreeView quests)
         {
             this.Buffer = buffer;
             this.actors = actors;
+            this.quests = quests;
 
             Nodes.Add(new TreeNode());
 
@@ -49,7 +50,7 @@ namespace GameMessageViewer
                         GameMessage message = Buffer.ParseMessage();
                         if (message != null)
                         {
-                            Text = message.ToString() + ":" + buffer.Length;
+                            Text = String.Join(".", (message.GetType().ToString().Split('.').Skip(5))) + ":" + buffer.Length;
                             buffer.Position = 0;
                         }
                         else
@@ -98,41 +99,55 @@ namespace GameMessageViewer
                             if (message is ACDEnterKnownMessage)
                             {
                                 String hex = (message as ACDEnterKnownMessage).ActorID.ToString("X8");
-
-
                                 string name;
                                 SNOAliases.Aliases.TryGetValue((message as ACDEnterKnownMessage).ActorSNO.ToString(), out name);
 
                                 if (!actors.Nodes.ContainsKey(hex))
                                 {
-                                    TreeNode actorNode = actors.Nodes.Add(hex, hex + "   " + name);
+                                    TreeNode actorNode = actors.Nodes.Add(hex, hex + "  " + name);
                                     actorNode.Tag = hex;
                                 }
                             }
 
+                            if (message is QuestUpdateMessage)
+                            {
+                                string name;
+                                SNOAliases.Aliases.TryGetValue((message as QuestUpdateMessage).snoQuest.ToString(), out name);
+
+                                if (!quests.Nodes.ContainsKey(name))
+                                {
+                                    TreeNode questNode = quests.Nodes.Add(name, name);
+                                    questNode.Tag = (message as QuestUpdateMessage).snoQuest.ToString("X8");
+                                }
+                            }
 
                             MessageNode node = new MessageNode()
                             {
-                                Text = message.GetType().ToString(),
+                                Text = String.Join(".", (message.GetType().ToString().Split('.').Skip(5))),
                                 gameMessage = message,
                                 mStart = Start * 4 + start,
                                 mEnd = Start * 4 + Buffer.Position
                             };
                             node.BackColor = this.BackColor;
 
+                            // Bruteforce find actor ID and add to actor tree
                             string text = message.AsText();
                             foreach (TreeNode an in actors.Nodes)
                                 if (text.Contains((string)an.Tag))
                                 {
-                                    MessageNode nodeb = new MessageNode()
-                                    {
-                                        Text = message.GetType().ToString(),
-                                        gameMessage = message,
-                                        mStart = Start * 4 + start,
-                                        mEnd = Start * 4 + Buffer.Position
-                                    };
+                                    MessageNode nodeb = node.clone();
                                     nodeb.BackColor = this.BackColor;
                                     an.Nodes.Add(nodeb);
+                                }
+
+                            // Bruteforce find quest SNO and add to quest tree
+                            text = message.AsText();
+                            foreach (TreeNode qn in quests.Nodes)
+                                if (text.Contains(qn.Tag.ToString()))
+                                {
+                                    MessageNode nodeb = node.clone();
+                                    nodeb.BackColor = this.BackColor;
+                                    qn.Nodes.Add(nodeb);
                                 }
 
                             allNodes.Add(node);

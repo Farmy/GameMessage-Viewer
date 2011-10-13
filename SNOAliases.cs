@@ -6,6 +6,9 @@ using System.IO;
 
 namespace GameMessageViewer
 {
+    /// <summary>
+    /// Creates a dictionary with names for snos
+    /// </summary>
     class SNOAliases
     {
         public static Dictionary<string, string> Aliases;
@@ -21,7 +24,7 @@ namespace GameMessageViewer
                         if(Aliases.ContainsKey(entry.Split(' ')[0]) == false)
                             Aliases.Add(entry.Split(' ')[0], entry.Split(' ')[1]);
             }
-            catch (Exception) { System.Diagnostics.Debugger.Break(); }
+            catch (Exception) { Console.WriteLine("Error creating sno list"); }
         }
     }
 }

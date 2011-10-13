@@ -13,6 +13,8 @@ namespace GameMessageViewer
 {
     public partial class Find : Form
     {
+        public string Filter;
+
         public Find()
         {
             InitializeComponent();
@@ -27,22 +29,37 @@ namespace GameMessageViewer
             foreach(String message in items)
                 cboMessages.Items.Add(message);
         }
-
-        public new string Show()
+        /*
+        public new DialogResult Show()
         {
+            /*
+            DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.ShowDialog();
-            return cboMessages.Text;
-        }
+            return this.DialogResult;
+             * */
+        //}
+    
+  
+        
 
         private void button1_Click(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.OK;
             this.Close();
         }
-
+        
         private void Find_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
+            {
+                DialogResult = DialogResult.OK;
                 this.Close();
+            }
+        }
+
+        private void Find_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Filter = this.cboMessages.Text;
         }
     }
 }
