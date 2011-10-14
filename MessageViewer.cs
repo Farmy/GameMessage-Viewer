@@ -199,7 +199,7 @@ namespace GameMessageViewer
         {
             if (dontrec) return;
             dontrec = true;
-            //output.Rtf = temp.Rtf;
+            output.Rtf = temp.Rtf;
             foreach (TreeNode tn in actors.Nodes)
             {
                 int pos = temp.Find(tn.Tag as string);
@@ -279,6 +279,11 @@ namespace GameMessageViewer
                 if (Path.GetExtension(ofd.FileName).ToLower().Contains("hex"))
                     LoadWiresharkHex(File.ReadAllText(ofd.FileName));
             }
+        }
+
+        private void tree_AfterSelect_1(object sender, TreeViewEventArgs e)
+        {
+
         }
 
 
