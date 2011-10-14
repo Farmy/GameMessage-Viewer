@@ -101,6 +101,7 @@ namespace GameMessageViewer
             text = "";
             string currentDirection = "";
             progressBar.Maximum = rows.Length;
+            progressBar.Value = 0;
             progressBar.Visible = true;
 
             for (int i = 0; i < rows.Length; i++)

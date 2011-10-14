@@ -235,6 +235,22 @@ namespace GameMessageViewer
                                 {
                                     usedKeys.Add(id.ToString());
                                     string alias = "";
+
+                                    if (SNOAliases.AnimationGroups.TryGetValue(id.ToString(), out alias))
+                                    {
+                                        output.Rtf = output.Rtf.Replace(word, word + ":" + alias);
+
+                                        int pos = -1;
+                                        while ((pos = output.Text.IndexOf(alias, pos + 1)) > 0)
+                                        {
+                                            output.SelectionStart = pos;
+                                            output.SelectionLength = alias.Length;
+                                            output.SelectionColor = Color.OrangeRed;
+                                            output.SelectionLength = 0;
+                                        }
+                                    }
+
+
                                     if (SNOAliases.Aliases.TryGetValue(id.ToString(), out alias))
                                     {
                                         output.Rtf = output.Rtf.Replace(word, word + ":" + alias);
