@@ -48,8 +48,19 @@ namespace GameMessageViewer
 
         private void ApplyFilter()
         {
+            tree.BeginUpdate();
+            progressBar.Visible = true;
+            progressBar.Value = 0;
+            progressBar.Maximum = tree.Nodes.Count;
+
             foreach (BufferNode b in tree.Nodes)
+            {
+                progressBar.Value++;
                 b.ApplyFilter(filterWindow.Filter);
+            }
+
+            progressBar.Visible = false;
+            tree.EndUpdate();
         }
 
         private void tree_BeforeSelect(object sender, TreeViewCancelEventArgs e)
