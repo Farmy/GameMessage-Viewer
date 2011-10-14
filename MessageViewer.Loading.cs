@@ -1,10 +1,13 @@
-﻿using System;
+﻿#pragma warning disable 
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
+using Mooege.Net.GS.Message.Definitions.Player;
 
 namespace GameMessageViewer
 {
@@ -45,7 +48,7 @@ namespace GameMessageViewer
                     if (i > 0 && (rows[i].StartsWith(" ") ^ rows[i - 1].StartsWith(" ")))
                     {
                         Buffer buffer = new Buffer(String_To_Bytes(currentBuffer));
-                        BufferNode newNode = new BufferNode(buffer, actors, questTree);
+                        BufferNode newNode = new BufferNode(buffer, actors, questTree, "1");
                         newNode.Start = text.Length;
                         newNode.BackColor = rows[i].StartsWith(" ") ? newNode.BackColor = Color.LightCoral : Color.LightBlue;
                         tree.Nodes.Add(newNode);
@@ -60,7 +63,7 @@ namespace GameMessageViewer
             else
             {
                 Buffer buffer = new Buffer(String_To_Bytes(text));
-                BufferNode newNode = new BufferNode(buffer, actors, questTree);
+                BufferNode newNode = new BufferNode(buffer, actors, questTree, "1");
                 newNode.Parse();
                 tree.Nodes.Add(newNode);
             }
@@ -94,7 +97,7 @@ namespace GameMessageViewer
         }
 
 
-        private void LoadDump(string text)
+        private void LoadPreparsed(string text)
         {
             String[] rows = text.Split('\n');
             String currentBuffer = "";
@@ -111,28 +114,126 @@ namespace GameMessageViewer
                 if (this.Visible == false)
                     break;
 
-                if (rows[i].Length > 3)
+            }
+
+        }
+
+
+        private void LoadDump(string text)
+        {
+            String[] rows = text.Split('\n');
+            String currentBuffer = "";
+            text = "";
+            string currentDirection = "";
+            progressBar.Maximum = rows.Length;
+            progressBar.Value = 0;
+            progressBar.Visible = true;
+            allNodes = new List<BufferNode>();
+
+            Color[][] trafficColors = new Color[][]
+            { new Color[] { Color.LightCoral , Color.LightBlue },
+              new Color[] { Color.Tomato, Color.Blue },
+              new Color[] { Color.Red, Color.BlueViolet },
+              new Color[] { Color.PaleVioletRed, Color.CadetBlue } 
+            };
+
+
+            List<string> clients = new List<string>();
+            Dictionary<string, Color[]> colors = new Dictionary<string,Color[]>();
+        
+            // to read mooege dumps, some leading info must be removed
+            // the amount of chars is fixed so its calculated once
+            int removeChars = rows[0].IndexOf("Inc:");
+            if(removeChars < 0)
+                removeChars = rows[0].IndexOf("Out:");
+
+            for (int i = 0; i < rows.Length; i++)
+            {
+                if (rows[i].Length > removeChars)
                 {
-                    if (i > 0 && rows[i].Substring(0, 1) != currentDirection)
+                    // Skip anything til the Inc/Out part (for mooege dumps), note client hash
+                    rows[i] = rows[i].Substring(removeChars);
+                    string clientHash = rows[i].Substring(4, 8);
+                    if (clients.Contains(clientHash) == false)
                     {
-                        Buffer buffer = new Buffer(String_To_Bytes(currentBuffer));
-                        BufferNode newNode = new BufferNode(buffer, actors, questTree);
-                        newNode.Start = text.Length;
-                        newNode.BackColor = currentDirection == "I" ? newNode.BackColor = Color.LightCoral : Color.LightBlue;
-                        tree.Nodes.Add(newNode);
-                        newNode.ApplyFilter(filterWindow.Filter);
-                        text += currentBuffer;
-                        currentBuffer = "";
-                        currentDirection = rows[i].Substring(0, 1);
+                        clients.Add(clientHash);
+                        colors[clientHash] = trafficColors[clients.Count - 1];
                     }
 
-                    if (currentDirection == "") currentDirection = rows[i].Substring(0, 1);
-                    currentBuffer += (rows[i].Substring(4)).Replace("\r", "");
+                    progressBar.Value = i;
+
+                    //causes bugs
+                    //Application.DoEvents();
+                    //if (this.Visible == false)
+                    //    break;
+
+                    if (rows[i].Length > 3)
+                    {
+                        // Everytime the direction of data changes, the buffer is parsed and emptied
+                        // this is for pcap dumps where the data stream is sent in smaller packets
+                        // in mooege, data is dumped in whole
+                        if (i > 0 && rows[i].Substring(0, 1) != currentDirection)
+                        {
+                            Buffer buffer = new Buffer(String_To_Bytes(currentBuffer));
+                            BufferNode newNode = new BufferNode(buffer, actors, questTree, clientHash);
+                            newNode.Start = text.Length;
+                            newNode.BackColor = currentDirection == "I" ? colors[clientHash][0] : colors[clientHash][1];
+                            allNodes.Add(newNode);
+                            //tree.Nodes.Add(newNode);
+                            newNode.ApplyFilter(filterWindow.Filter);
+                            text += currentBuffer;
+                            currentBuffer = "";
+                            currentDirection = rows[i].Substring(0, 1);
+                        }
+
+                        if (currentDirection == "") currentDirection = rows[i].Substring(0, 1);
+                        currentBuffer += (rows[i].Substring(13)).Replace("\r", "");
+                    }
                 }
             }
 
+            // Create a filter menu entry for every client in the stream.
+            filterPlayersToolStripMenuItem.DropDownItems.Clear();
+            foreach (string client in clients)
+            {
+                ToolStripMenuItem m = new ToolStripMenuItem(client);
+                m.Tag = client;
+                m.Checked = true;
+                m.Click += new EventHandler(FilterPlayerClick);
+
+                // find toon name for client hash
+                foreach(BufferNode bn in allNodes)
+                    if(bn.clientHash.Equals(m.Tag.ToString()))
+                        foreach(MessageNode mn in bn.Nodes)
+                            if(mn.gameMessage is NewPlayerMessage)
+                            {
+                                m.Text = (mn.gameMessage as NewPlayerMessage).ToonName;
+                                goto hell;
+                            }
+
+            hell:
+                filterPlayersToolStripMenuItem.DropDownItems.Add(m);
+            }
+
+
+            tree.Nodes.AddRange(allNodes.ToArray());
             input.Text = text;
             progressBar.Visible = false;
+        }
+
+        void FilterPlayerClick(object sender, EventArgs e)
+        {
+            Dictionary<string, bool> filter = new Dictionary<string, bool>();
+            ((ToolStripMenuItem)sender).Checked = !((ToolStripMenuItem)sender).Checked;
+
+            foreach (ToolStripMenuItem m in filterPlayersToolStripMenuItem.DropDownItems)
+                filter.Add(m.Tag.ToString(), m.Checked);
+
+            tree.Nodes.Clear();
+            foreach (BufferNode bn in allNodes)
+                if (filter[bn.clientHash])
+                    tree.Nodes.Add(bn);
+
         }
     }
 }

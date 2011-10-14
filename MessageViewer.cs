@@ -28,6 +28,8 @@ namespace GameMessageViewer
     {
         MessageFilter filterWindow = new MessageFilter();
         RichTextBox temp = new RichTextBox();
+        List<BufferNode> allNodes = new List<BufferNode>();
+
 
         public MessageViewer()
         {
@@ -190,13 +192,10 @@ namespace GameMessageViewer
         }
 
         /// <summary>
-        /// Underscore actor ids and add their sno name
+        /// Underscore actor ids and add sno names
         /// </summary>
-        bool dontrec = false;
         private void DisplayMessage(string text)
         {
-            if (dontrec) return;
-            dontrec = true;
             temp.Text = text;
             output.Rtf = temp.Rtf;
             foreach (TreeNode tn in actors.Nodes)
@@ -212,7 +211,6 @@ namespace GameMessageViewer
                 }
             }
 
-            dontrec = false;
             temp.Size = output.Size;
             temp.Location = output.Location;
             output.Rtf = temp.Rtf;
@@ -277,17 +275,19 @@ namespace GameMessageViewer
         private void openPreparsedDumpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Readable dumps|*.cap; *.pcap; *.txt; *.hex|"+
+            ofd.Filter = "Readable dumps |*.cap; *.pcap; *.log; *.hex|"+
                          "Libpcap dumpy (*.cap; *.pcap)|*.cap; *.pcap|"+
-                         "Mooege dumps (*.txt)|*.txt|"+
+                         "Mooege dumps (*.log)|*.log|"+
                          "Wireshark hex view (*.hex)|*.hex";
 
             if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                questTree.Nodes.Clear();
                 actors.Nodes.Clear();
                 tree.Nodes.Clear();
+                BufferNode.Reset();
 
-                if(Path.GetExtension(ofd.FileName).ToLower().Contains("txt"))
+                if(Path.GetExtension(ofd.FileName).ToLower().Contains("log"))
                     LoadDump(File.ReadAllText(ofd.FileName));
                 if (Path.GetExtension(ofd.FileName).ToLower().Contains("cap"))
                     LoadPcap(ofd.FileName);

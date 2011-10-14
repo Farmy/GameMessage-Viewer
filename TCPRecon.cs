@@ -103,7 +103,7 @@ namespace GameMessageViewer
             // ignore empty packets
             if (data.Length == 0) return;
 
-            data_out_file.WriteLine((index == 0 ? "Inc:" : "Out:") + BitConverter.ToString(data).Replace("-", ""));
+            data_out_file.WriteLine((index == 0 ? "Inc:00000001:" : "Out:00000001:") + BitConverter.ToString(data).Replace("-", ""));
             bytes_written[index] += (uint)data.Length;
             empty_tcp_stream = false;
         }

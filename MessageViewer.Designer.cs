@@ -33,6 +33,7 @@
             this.tabActors = new System.Windows.Forms.TabPage();
             this.actors = new System.Windows.Forms.TreeView();
             this.tabQuests = new System.Windows.Forms.TabPage();
+            this.questTree = new System.Windows.Forms.TreeView();
             this.tabRawData = new System.Windows.Forms.TabPage();
             this.input = new System.Windows.Forms.RichTextBox();
             this.splitter2 = new System.Windows.Forms.Splitter();
@@ -62,7 +63,7 @@
             this.trySNOAliasesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.questTree = new System.Windows.Forms.TreeView();
+            this.filterPlayersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel_mainframe.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabActors.SuspendLayout();
@@ -133,10 +134,20 @@
             this.tabQuests.Location = new System.Drawing.Point(4, 22);
             this.tabQuests.Name = "tabQuests";
             this.tabQuests.Padding = new System.Windows.Forms.Padding(3);
-            this.tabQuests.Size = new System.Drawing.Size(667, 492);
+            this.tabQuests.Size = new System.Drawing.Size(356, 372);
             this.tabQuests.TabIndex = 2;
             this.tabQuests.Text = "Quests";
             this.tabQuests.UseVisualStyleBackColor = true;
+            // 
+            // questTree
+            // 
+            this.questTree.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.questTree.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.questTree.Location = new System.Drawing.Point(3, 3);
+            this.questTree.Name = "questTree";
+            this.questTree.Size = new System.Drawing.Size(661, 486);
+            this.questTree.TabIndex = 2;
+            this.questTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.groupedNode_AfterSelect);
             // 
             // tabRawData
             // 
@@ -144,7 +155,7 @@
             this.tabRawData.Location = new System.Drawing.Point(4, 22);
             this.tabRawData.Name = "tabRawData";
             this.tabRawData.Padding = new System.Windows.Forms.Padding(3);
-            this.tabRawData.Size = new System.Drawing.Size(667, 492);
+            this.tabRawData.Size = new System.Drawing.Size(356, 372);
             this.tabRawData.TabIndex = 1;
             this.tabRawData.Text = "Raw data view";
             this.tabRawData.UseVisualStyleBackColor = true;
@@ -334,20 +345,20 @@
             // openPreparsedDumpToolStripMenuItem
             // 
             this.openPreparsedDumpToolStripMenuItem.Name = "openPreparsedDumpToolStripMenuItem";
-            this.openPreparsedDumpToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openPreparsedDumpToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.openPreparsedDumpToolStripMenuItem.Text = "Open...";
             this.openPreparsedDumpToolStripMenuItem.Click += new System.EventHandler(this.openPreparsedDumpToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(149, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(130, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -355,6 +366,7 @@
             // 
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.messageFilterToolStripMenuItem,
+            this.filterPlayersToolStripMenuItem,
             this.findAllMessagesToolStripMenuItem,
             this.toolStripMenuItem1,
             this.trySNOAliasesToolStripMenuItem});
@@ -366,7 +378,7 @@
             // 
             this.messageFilterToolStripMenuItem.Name = "messageFilterToolStripMenuItem";
             this.messageFilterToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
-            this.messageFilterToolStripMenuItem.Text = "Message filter...";
+            this.messageFilterToolStripMenuItem.Text = "Filter messages...";
             this.messageFilterToolStripMenuItem.Click += new System.EventHandler(this.messageFilterToolStripMenuItem_Click);
             // 
             // findAllMessagesToolStripMenuItem
@@ -401,19 +413,15 @@
             // aboutToolStripMenuItem1
             // 
             this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
-            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(115, 22);
             this.aboutToolStripMenuItem1.Text = "About...";
             this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.aboutToolStripMenuItem1_Click);
             // 
-            // questTree
+            // filterPlayersToolStripMenuItem
             // 
-            this.questTree.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.questTree.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.questTree.Location = new System.Drawing.Point(3, 3);
-            this.questTree.Name = "questTree";
-            this.questTree.Size = new System.Drawing.Size(661, 486);
-            this.questTree.TabIndex = 2;
-            this.questTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.groupedNode_AfterSelect);
+            this.filterPlayersToolStripMenuItem.Name = "filterPlayersToolStripMenuItem";
+            this.filterPlayersToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.filterPlayersToolStripMenuItem.Text = "Filter players...";
             // 
             // MessageViewer
             // 
@@ -487,6 +495,7 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem1;
         private System.Windows.Forms.TreeView questTree;
+        private System.Windows.Forms.ToolStripMenuItem filterPlayersToolStripMenuItem;
 
 
     }

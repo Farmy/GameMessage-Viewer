@@ -99,13 +99,6 @@ namespace GameMessageViewer
             capture.OnPacketArrival +=
                 new SharpPcap.PacketArrivalEventHandler(device_PcapOnPacketArrival);
 
-            // FOR THIS LINE TO WORK YOU NEED TO CHANGE THE
-            // SHARPPCAP LIBRARY MANUALLY AND REMOVE PcapSetFilter method
-            // FROM PcapOfflineDevice
-            //
-            // add a filter so we get only tcp packets
-            // device.PcapSetFilter("tcp");
-
             //Start capture 'INFINTE' number of packets
             //This method will return when EOF reached.
             capture.Capture();

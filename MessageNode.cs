@@ -22,7 +22,7 @@ namespace GameMessageViewer
             Text = String.Join(".", (message.GetType().ToString().Split('.').Skip(5)));
         }
 
-        public MessageNode Clone()
+        public new MessageNode Clone()
         {
             return new MessageNode(gameMessage, mStart, mEnd);
         }

@@ -11,6 +11,8 @@ using Mooege.Net.GS.Message.Definitions.Misc;
 using Mooege.Net.GS.Message.Definitions.Quest;
 using Mooege.Net.GS.Message.Definitions.Tick;
 using Mooege.Net.GS.Message.Definitions.Attribute;
+using Mooege.Net.GS.Message.Definitions.Actor;
+using Mooege.Net.GS.Message.Definitions.Player;
 
 namespace GameMessageViewer
 {
@@ -23,6 +25,12 @@ namespace GameMessageViewer
         private TreeView quests; // i know...bad design
         private List<MessageNode> allNodes = new List<MessageNode>();
         private static Dictionary<uint, TreeNode> actorMap = new Dictionary<uint, TreeNode>();
+        public readonly string clientHash;
+
+        public static void Reset()
+        {
+            actorMap = new Dictionary<uint, TreeNode>();
+        }
 
         public void ApplyFilter(Dictionary<string, bool> filter)
         {
@@ -33,11 +41,12 @@ namespace GameMessageViewer
                     Nodes.Add(node);
         }
 
-        public BufferNode(Buffer buffer, TreeView actors, TreeView quests)
+        public BufferNode(Buffer buffer, TreeView actors, TreeView quests, string clientHash)
         {
             this.Buffer = buffer;
             this.actors = actors;
             this.quests = quests;
+            this.clientHash = clientHash;
 
             if (Buffer.IsPacketAvailable())
             {
@@ -128,11 +137,17 @@ namespace GameMessageViewer
 
                             try
                             {
-                                if (message is ACDTranslateNormalMessage)
+                                if (message is NotifyActorMovementMessage)
                                 {
-                                    actorMap[(uint)(message as ACDTranslateNormalMessage).Field0].Nodes.Add(node.Clone());
+                                    actorMap[(uint)(message as NotifyActorMovementMessage).ActorId].Nodes.Add(node.Clone());
                                     continue;
                                 }
+                                if (message is PlayerMovementMessage)
+                                {
+                                    actorMap[(uint)(message as PlayerMovementMessage).ActorId].Nodes.Add(node.Clone());
+                                    continue;
+                                }
+
                                 if (message is ACDGroupMessage)
                                 {
                                     actorMap[(uint)(message as ACDGroupMessage).ActorID].Nodes.Add(node.Clone());
@@ -195,7 +210,7 @@ namespace GameMessageViewer
 
 
                             }
-                            catch (Exception e) { }
+                            catch (Exception) { }
 
                             #endregion
 
