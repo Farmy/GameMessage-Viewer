@@ -36,40 +36,33 @@ namespace GameMessageViewer
             this.actors = actors;
             this.quests = quests;
 
-            Nodes.Add(new TreeNode());
-
             if (Buffer.IsPacketAvailable())
             {
-                int end = Buffer.Position;
-                end += Buffer.ReadInt(32) * 8;
+                Buffer.ReadInt(32);
 
-                if ((end - Buffer.Position) >= 9)
-
-                    try
+                try
+                {
+                    GameMessage message = Buffer.ParseMessage();
+                    if (message != null)
                     {
-                        GameMessage message = Buffer.ParseMessage();
-                        if (message != null)
-                        {
-                            Text = String.Join(".", (message.GetType().ToString().Split('.').Skip(5))) + ":" + buffer.Length;
-                            buffer.Position = 0;
-                        }
-                        else
-                        {
-                            buffer.Position = 32;
-                            Text = "Message not implemented: " + Buffer.ReadInt(9);
-                            buffer.Position = 0;
-                        }
-
+                        Text = String.Join(".", (message.GetType().ToString().Split('.').Skip(5))) + ":" + buffer.Length;
                     }
-                    catch (Exception)
+                    else
                     {
-                        Text = "Error parsing node";
-                        buffer.Position = 0;
+                        buffer.Position = 32;
+                        Text = "Message not implemented: " + Buffer.ReadInt(9);
                     }
+
+                }
+                catch (Exception)
+                {
+                    Text = "Error parsing node";
+                }
             }
             else
                 Text = "No Packet available";
 
+            buffer.Position = 0;
             Parse();
         }
 
@@ -95,7 +88,6 @@ namespace GameMessageViewer
                         GameMessage message = Buffer.ParseMessage();
                         if (message != null)
                         {
-
                             if (message is ACDEnterKnownMessage)
                             {
                                 String hex = (message as ACDEnterKnownMessage).ActorID.ToString("X8");
@@ -121,14 +113,14 @@ namespace GameMessageViewer
                                 }
                             }
 
-                            MessageNode node = new MessageNode()
-                            {
-                                Text = String.Join(".", (message.GetType().ToString().Split('.').Skip(5))),
-                                gameMessage = message,
-                                mStart = Start * 4 + start,
-                                mEnd = Start * 4 + Buffer.Position
-                            };
+                            MessageNode node = new MessageNode(message, Start * 4 + start, Start * 4 + Buffer.Position);
                             node.BackColor = this.BackColor;
+                            allNodes.Add(node);
+
+                            #region quickparse
+
+                            #endregion
+
 
                             // Bruteforce find actor ID and add to actor tree
                             string text = message.AsText();
@@ -150,19 +142,17 @@ namespace GameMessageViewer
                                     qn.Nodes.Add(nodeb);
                                 }
 
-                            allNodes.Add(node);
+
 
                         }
                         else
                         {
-                            Buffer.Position -= 9;
-                            allNodes.Add(new MessageNode() { Text = "Message not implemented:" + Buffer.ReadInt(9), gameMessage = new BoolDataMessage() });
-                            Buffer.Position += 9;
+                            System.Console.Write("No message found");
                         }
                     }
                     catch (Exception e)
                     {
-                        allNodes.Add(new MessageNode() { Text = "Error parsing :" + e.ToString(), gameMessage = new BoolDataMessage() });
+                        System.Console.Write("Error while parsing messages");
                     }
                 }
 

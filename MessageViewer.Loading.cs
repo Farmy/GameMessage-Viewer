@@ -8,7 +8,7 @@ using System.IO;
 
 namespace GameMessageViewer
 {
-    public partial class MessageViewer : Form
+    public partial class MessageViewer
     {
         private byte[] String_To_Bytes(string strInput)
         {
@@ -100,9 +100,16 @@ namespace GameMessageViewer
             String currentBuffer = "";
             text = "";
             string currentDirection = "";
+            progressBar.Maximum = rows.Length;
+            progressBar.Visible = true;
 
             for (int i = 0; i < rows.Length; i++)
             {
+                progressBar.Value = i;
+                Application.DoEvents();
+                if (this.Visible == false)
+                    break;
+
                 if (rows[i].Length > 3)
                 {
                     if (i > 0 && rows[i].Substring(0, 1) != currentDirection)
@@ -112,6 +119,7 @@ namespace GameMessageViewer
                         newNode.Start = text.Length;
                         newNode.BackColor = currentDirection == "I" ? newNode.BackColor = Color.LightCoral : Color.LightBlue;
                         tree.Nodes.Add(newNode);
+                        newNode.ApplyFilter(filterWindow.Filter);
                         text += currentBuffer;
                         currentBuffer = "";
                         currentDirection = rows[i].Substring(0, 1);
@@ -122,9 +130,8 @@ namespace GameMessageViewer
                 }
             }
 
-
             input.Text = text;
-            ApplyFilter();
+            progressBar.Visible = false;
         }
     }
 }

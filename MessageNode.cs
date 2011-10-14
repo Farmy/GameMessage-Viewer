@@ -14,15 +14,17 @@ namespace GameMessageViewer
         public int mStart;
         public int mEnd;
 
+        public MessageNode(GameMessage message, int start, int end)
+        {
+            this.gameMessage = message;
+            this.mStart = start;
+            this.mEnd = end;
+            Text = String.Join(".", (message.GetType().ToString().Split('.').Skip(5)));
+        }
+
         public MessageNode clone()
         {
-            return new MessageNode()
-            {
-                Text = this.Text,
-                gameMessage = this.gameMessage,
-                mStart = this.mStart,
-                mEnd = this.mEnd
-            };
+            return new MessageNode(gameMessage, mStart, mEnd);
         }
 
         public void Highlight(RichTextBox r)
@@ -36,20 +38,6 @@ namespace GameMessageViewer
             this.BackColor = Color.White;
             (Parent as HighlightingNode).Highlight(r);
         }
-
-        /*
-        public void MarkAsFound()
-        {
-            this.Parent.Expand();
-            this.Parent.BackColor = Color.Yellow;
-            this.BackColor = Color.Yellow;
-        }
-
-        public void SetToNormal()
-        {
-            this.BackColor = Color.White;
-        }
-         */
 
         public void Highlight(RichTextBox input, Color color)
         {

@@ -31,7 +31,6 @@ namespace GameMessageViewer
 
         public MessageViewer()
         {
-            temp.TextChanged += this.temp_TextChanged;
             InitializeComponent();
         }
 
@@ -41,23 +40,11 @@ namespace GameMessageViewer
 
 
 
-
-
-
-
         private void tree_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            //if (tree.SelectedNode is BufferNode)
-            //   (tree.SelectedNode as BufferNode).Parse();
-
             if (tree.SelectedNode is MessageNode)
-                temp.Text = (tree.SelectedNode as MessageNode).gameMessage.AsText();
-
-            //(tree.SelectedNode as HighlightingNode).Highlight(input);
+                DisplayMessage((tree.SelectedNode as MessageNode).gameMessage.AsText());
         }
-
-
-
 
         private void ApplyFilter()
         {
@@ -91,7 +78,7 @@ namespace GameMessageViewer
         private void groupedNode_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (e.Node is MessageNode)
-                temp.Text = (e.Node as MessageNode).gameMessage.AsText();
+                DisplayMessage((e.Node as MessageNode).gameMessage.AsText());
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -195,10 +182,11 @@ namespace GameMessageViewer
         /// Underscore actor ids and add their sno name
         /// </summary>
         bool dontrec = false;
-        private void temp_TextChanged(object sender, EventArgs e)
+        private void DisplayMessage(string text)
         {
             if (dontrec) return;
             dontrec = true;
+            temp.Text = text;
             output.Rtf = temp.Rtf;
             foreach (TreeNode tn in actors.Nodes)
             {
@@ -280,12 +268,6 @@ namespace GameMessageViewer
                     LoadWiresharkHex(File.ReadAllText(ofd.FileName));
             }
         }
-
-        private void tree_AfterSelect_1(object sender, TreeViewEventArgs e)
-        {
-
-        }
-
 
     }
 }

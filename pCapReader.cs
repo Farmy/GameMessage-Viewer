@@ -135,7 +135,7 @@ namespace GameMessageViewer
             TcpPacket tcpPacket = Packet.ParsePacket(LinkLayers.Ethernet, e.Packet.Data).PayloadPacket.PayloadPacket as TcpPacket;
 
             // THIS FILTERS D3 TRAFFIC, GS AS WELL AS MOONET
-            if (tcpPacket.SourcePort == 1119 || tcpPacket.DestinationPort == 1119)
+            if (tcpPacket != null && (tcpPacket.SourcePort == 1119 || tcpPacket.DestinationPort == 1119))
             {
                 Connection c = new Connection(tcpPacket);
                 if (!sharpPcapDict.ContainsKey(c))
