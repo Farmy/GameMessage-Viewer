@@ -37,7 +37,7 @@ namespace GameMessageViewer
 
             for (int i = 0; i < boxes.Count; i++)
             {
-                checkedListBox1.Items.Add(boxes[i].Text);
+                checkedListBox1.Items.Add(boxes[i].Text, true);
             }
         }
 
