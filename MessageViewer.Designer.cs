@@ -198,9 +198,9 @@
             this.panel_mdump_content_.AutoSize = true;
             this.panel_mdump_content_.Controls.Add(this.panel_mdump_subcontent);
             this.panel_mdump_content_.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel_mdump_content_.Location = new System.Drawing.Point(0, 13);
+            this.panel_mdump_content_.Location = new System.Drawing.Point(0, 24);
             this.panel_mdump_content_.Name = "panel_mdump_content_";
-            this.panel_mdump_content_.Size = new System.Drawing.Size(269, 385);
+            this.panel_mdump_content_.Size = new System.Drawing.Size(269, 374);
             this.panel_mdump_content_.TabIndex = 5;
             // 
             // panel_mdump_subcontent
@@ -209,7 +209,7 @@
             this.panel_mdump_subcontent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_mdump_subcontent.Location = new System.Drawing.Point(0, 0);
             this.panel_mdump_subcontent.Name = "panel_mdump_subcontent";
-            this.panel_mdump_subcontent.Size = new System.Drawing.Size(269, 385);
+            this.panel_mdump_subcontent.Size = new System.Drawing.Size(269, 374);
             this.panel_mdump_subcontent.TabIndex = 4;
             // 
             // output
@@ -218,7 +218,7 @@
             this.output.Location = new System.Drawing.Point(0, 0);
             this.output.Name = "output";
             this.output.ReadOnly = true;
-            this.output.Size = new System.Drawing.Size(269, 385);
+            this.output.Size = new System.Drawing.Size(269, 374);
             this.output.TabIndex = 5;
             this.output.Text = "";
             this.output.MouseClick += new System.Windows.Forms.MouseEventHandler(this.output_MouseClick);
@@ -231,17 +231,19 @@
             this.panel_mdump_header.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel_mdump_header.Location = new System.Drawing.Point(0, 0);
             this.panel_mdump_header.Name = "panel_mdump_header";
-            this.panel_mdump_header.Size = new System.Drawing.Size(269, 13);
+            this.panel_mdump_header.Size = new System.Drawing.Size(269, 24);
             this.panel_mdump_header.TabIndex = 4;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 0);
+            this.label1.Location = new System.Drawing.Point(1, 0);
+            this.label1.MinimumSize = new System.Drawing.Size(0, 24);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(79, 13);
+            this.label1.Size = new System.Drawing.Size(79, 24);
             this.label1.TabIndex = 9;
             this.label1.Text = "Message dump";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // splitter1
             // 
@@ -268,9 +270,9 @@
             // 
             this.panel_messages_content.Controls.Add(this.tree);
             this.panel_messages_content.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel_messages_content.Location = new System.Drawing.Point(0, 13);
+            this.panel_messages_content.Location = new System.Drawing.Point(0, 24);
             this.panel_messages_content.Name = "panel_messages_content";
-            this.panel_messages_content.Size = new System.Drawing.Size(257, 385);
+            this.panel_messages_content.Size = new System.Drawing.Size(257, 374);
             this.panel_messages_content.TabIndex = 16;
             // 
             // tree
@@ -278,7 +280,7 @@
             this.tree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tree.Location = new System.Drawing.Point(0, 0);
             this.tree.Name = "tree";
-            this.tree.Size = new System.Drawing.Size(257, 385);
+            this.tree.Size = new System.Drawing.Size(257, 374);
             this.tree.TabIndex = 5;
             this.tree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tree_AfterSelect);
             // 
@@ -289,17 +291,19 @@
             this.panel_messages_header.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel_messages_header.Location = new System.Drawing.Point(0, 0);
             this.panel_messages_header.Name = "panel_messages_header";
-            this.panel_messages_header.Size = new System.Drawing.Size(257, 13);
+            this.panel_messages_header.Size = new System.Drawing.Size(257, 24);
             this.panel_messages_header.TabIndex = 15;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(0, 0);
+            this.label2.MinimumSize = new System.Drawing.Size(0, 24);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(90, 13);
+            this.label2.Size = new System.Drawing.Size(90, 24);
             this.label2.TabIndex = 15;
             this.label2.Text = "Message browser";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // panel1
             // 
