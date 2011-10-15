@@ -35,37 +35,10 @@ namespace GameMessageViewer
 
             boxes.Sort((a, b) => a.Text.CompareTo(b.Text));
 
-            int itemsPerRow = 6;
-
-            int count = 0;
-            foreach (CheckBox c in boxes)
+            for (int i = 0; i < boxes.Count; i++)
             {
-                bool selected;
-                if (Filter.TryGetValue(c.Text, out selected))
-                    c.Checked = selected;
-                else
-                    c.Checked = true;
-
-                c.Left = 20 + 220 * (count % itemsPerRow);
-                c.Top = 20 + 20 * (count++ / itemsPerRow);
-                Controls.Add(c);
+                checkedListBox1.Items.Add(boxes[i].Text);
             }
-
-            int Width = 40 + itemsPerRow * 220;
-            int Height = 60 + cmdOk.Height + (count - 1) / itemsPerRow * 20;
-            this.ClientSize = new System.Drawing.Size(Width, Height);
-
-
-            cmdAll.Top = this.ClientSize.Height - cmdAll.Height - 20;
-            cmdNone.Top = this.ClientSize.Height - cmdNone.Height - 20;
-
-            cmdOk.Left = this.ClientSize.Width - cmdOk.Width - 20;
-            cmdOk.Top = this.ClientSize.Height - cmdOk.Height - 20;
-
-            foreach (Control c in this.Controls)
-                if (c is CheckBox)
-                    Filter[c.Text] = true;
-
         }
 
         new public void Show()
@@ -76,25 +49,27 @@ namespace GameMessageViewer
 
         private void cmdOk_Click(object sender, EventArgs e)
         {
-            foreach (Control c in this.Controls)
-                if(c is CheckBox)
-                    Filter[c.Text] = (c as CheckBox).Checked;
-
+            for (int i = 0; i < checkedListBox1.Items.Count; i++)
+            {
+                string name = checkedListBox1.Items[i].ToString();
+                Filter[name] = checkedListBox1.GetItemChecked(i);
+            }
             this.Close();
         }
 
         private void cmdAll_Click(object sender, EventArgs e)
         {
-            foreach (Control c in this.Controls)
-                if (c is CheckBox)
-                    (c as CheckBox).Checked = true;
+            for (int i = 0; i < checkedListBox1.Items.Count; i++) {
+                checkedListBox1.SetItemChecked(i, true);
+            }
         }
 
         private void cmdNone_Click(object sender, EventArgs e)
         {
-            foreach (Control c in this.Controls)
-                if (c is CheckBox)
-                    (c as CheckBox).Checked = false;
+            for (int i = 0; i < checkedListBox1.Items.Count; i++)
+            {
+                checkedListBox1.SetItemChecked(i, false);
+            } 
         } 
     }
 }
