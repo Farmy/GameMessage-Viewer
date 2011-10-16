@@ -146,14 +146,14 @@ namespace GameMessageViewer
             int removeChars = rows[0].IndexOf("Inc:");
             if(removeChars < 0)
                 removeChars = rows[0].IndexOf("Out:");
-
+            string clientHash = "";
             for (int i = 0; i < rows.Length; i++)
             {
                 if (rows[i].Length > removeChars)
                 {
                     // Skip anything til the Inc/Out part (for mooege dumps), note client hash
                     rows[i] = rows[i].Substring(removeChars);
-                    string clientHash = rows[i].Substring(4, 8);
+                    clientHash = rows[i].Substring(4, 8);
                     if (clients.Contains(clientHash) == false)
                     {
                         clients.Add(clientHash);
@@ -191,6 +191,21 @@ namespace GameMessageViewer
                     }
                 }
             }
+
+
+            if (currentBuffer.Length > 10)
+            {
+                Buffer buffer = new Buffer(String_To_Bytes(currentBuffer));
+                BufferNode newNode = new BufferNode(buffer, actors, questTree, clientHash);
+                newNode.Start = text.Length;
+                newNode.BackColor = currentDirection == "I" ? colors[clientHash][0] : colors[clientHash][1];
+                allNodes.Add(newNode);
+                newNode.ApplyFilter(filterWindow.Filter);
+                text += currentBuffer;
+            }
+
+
+
 
             // Create a filter menu entry for every client in the stream.
             filterPlayersToolStripMenuItem.DropDownItems.Clear();
