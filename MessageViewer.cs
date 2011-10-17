@@ -299,13 +299,29 @@ namespace GameMessageViewer
         private void queryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CustomLinqQuery query = new CustomLinqQuery();
+            if (query.Show(tree.Nodes.Cast<BufferNode>()) == System.Windows.Forms.DialogResult.OK)
+            {
+                TreeView treeQuery = new TreeView();
+                treeQuery.BorderStyle = BorderStyle.None;
+                treeQuery.Dock = DockStyle.Fill;
+                treeQuery.AfterSelect += this.groupedNode_AfterSelect;
+                TabPage tab = new TabPage("Query");
+                tab.Controls.Add(treeQuery);
+                tab.DoubleClick += (o,k) => MessageBox.Show("WERWER");
 
-            query.Show(tree.Nodes.Cast<BufferNode>());
+                treeQuery.Nodes.Clear();
+                foreach (MessageNode mn in query.QueryResult)
+                    treeQuery.Nodes.Add(mn.Clone());
 
-            QueryResultTree.Nodes.Clear();
-            foreach (MessageNode mn in query.QueryResult)
-                QueryResultTree.Nodes.Add(mn.Clone());
+                tabControl2.TabPages.Add(tab);
+                tabControl2.SelectTab(tab);
+            }
+        }
 
+        private void tabControl2_DoubleClick(object sender, EventArgs e)
+        {
+            if(tabControl2.SelectedIndex != 0)
+                tabControl2.TabPages.Remove((TabPage)tabControl2.SelectedTab);
         }
 
     }

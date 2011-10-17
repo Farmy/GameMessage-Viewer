@@ -46,9 +46,7 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.panel_messages = new System.Windows.Forms.Panel();
             this.panel_messages_content = new System.Windows.Forms.Panel();
-            this.tree = new System.Windows.Forms.TreeView();
             this.panel_messages_header = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -62,10 +60,12 @@
             this.findAllMessagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.trySNOAliasesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.queryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.queryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.QueryResultTree = new System.Windows.Forms.TreeView();
+            this.tabControl2 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tree = new System.Windows.Forms.TreeView();
             this.panel_mainframe.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabActors.SuspendLayout();
@@ -77,9 +77,10 @@
             this.panel_mdump_header.SuspendLayout();
             this.panel_messages.SuspendLayout();
             this.panel_messages_content.SuspendLayout();
-            this.panel_messages_header.SuspendLayout();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.tabControl2.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel_mainframe
@@ -111,7 +112,6 @@
             // 
             // tabActors
             // 
-            this.tabActors.Controls.Add(this.QueryResultTree);
             this.tabActors.Controls.Add(this.actors);
             this.tabActors.Location = new System.Drawing.Point(4, 22);
             this.tabActors.Name = "tabActors";
@@ -271,42 +271,21 @@
             // 
             // panel_messages_content
             // 
-            this.panel_messages_content.Controls.Add(this.tree);
+            this.panel_messages_content.Controls.Add(this.tabControl2);
             this.panel_messages_content.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel_messages_content.Location = new System.Drawing.Point(0, 24);
+            this.panel_messages_content.Location = new System.Drawing.Point(0, 0);
             this.panel_messages_content.Name = "panel_messages_content";
-            this.panel_messages_content.Size = new System.Drawing.Size(257, 374);
+            this.panel_messages_content.Size = new System.Drawing.Size(257, 398);
             this.panel_messages_content.TabIndex = 16;
-            // 
-            // tree
-            // 
-            this.tree.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tree.Location = new System.Drawing.Point(0, 0);
-            this.tree.Name = "tree";
-            this.tree.Size = new System.Drawing.Size(257, 374);
-            this.tree.TabIndex = 5;
-            this.tree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tree_AfterSelect);
             // 
             // panel_messages_header
             // 
             this.panel_messages_header.AutoSize = true;
-            this.panel_messages_header.Controls.Add(this.label2);
             this.panel_messages_header.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel_messages_header.Location = new System.Drawing.Point(0, 0);
             this.panel_messages_header.Name = "panel_messages_header";
-            this.panel_messages_header.Size = new System.Drawing.Size(257, 24);
+            this.panel_messages_header.Size = new System.Drawing.Size(257, 0);
             this.panel_messages_header.TabIndex = 15;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(0, 0);
-            this.label2.MinimumSize = new System.Drawing.Size(0, 24);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(90, 24);
-            this.label2.TabIndex = 15;
-            this.label2.Text = "Message browser";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // panel1
             // 
@@ -375,9 +354,9 @@
             this.messageFilterToolStripMenuItem,
             this.filterPlayersToolStripMenuItem,
             this.findAllMessagesToolStripMenuItem,
+            this.queryToolStripMenuItem,
             this.toolStripMenuItem1,
-            this.trySNOAliasesToolStripMenuItem,
-            this.queryToolStripMenuItem});
+            this.trySNOAliasesToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
@@ -416,6 +395,14 @@
             this.trySNOAliasesToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.trySNOAliasesToolStripMenuItem.Text = "Try SNO Aliases";
             // 
+            // queryToolStripMenuItem
+            // 
+            this.queryToolStripMenuItem.Name = "queryToolStripMenuItem";
+            this.queryToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
+            this.queryToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.queryToolStripMenuItem.Text = "Query...";
+            this.queryToolStripMenuItem.Click += new System.EventHandler(this.queryToolStripMenuItem_Click);
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -431,19 +418,37 @@
             this.aboutToolStripMenuItem1.Text = "About...";
             this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.aboutToolStripMenuItem1_Click);
             // 
-            // queryToolStripMenuItem
+            // tabControl2
             // 
-            this.queryToolStripMenuItem.Name = "queryToolStripMenuItem";
-            this.queryToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
-            this.queryToolStripMenuItem.Text = "Query...";
-            this.queryToolStripMenuItem.Click += new System.EventHandler(this.queryToolStripMenuItem_Click);
+            this.tabControl2.Controls.Add(this.tabPage1);
+            this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl2.Location = new System.Drawing.Point(0, 0);
+            this.tabControl2.Name = "tabControl2";
+            this.tabControl2.SelectedIndex = 0;
+            this.tabControl2.Size = new System.Drawing.Size(257, 398);
+            this.tabControl2.TabIndex = 0;
+            this.tabControl2.DoubleClick += new System.EventHandler(this.tabControl2_DoubleClick);
             // 
-            // QueryResultTree
+            // tabPage1
             // 
-            this.QueryResultTree.Location = new System.Drawing.Point(6, 6);
-            this.QueryResultTree.Name = "QueryResultTree";
-            this.QueryResultTree.Size = new System.Drawing.Size(225, 257);
-            this.QueryResultTree.TabIndex = 15;
+            this.tabPage1.Controls.Add(this.tree);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(249, 372);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tree
+            // 
+            this.tree.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tree.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tree.Location = new System.Drawing.Point(3, 3);
+            this.tree.Name = "tree";
+            this.tree.Size = new System.Drawing.Size(243, 366);
+            this.tree.TabIndex = 6;
+            this.tree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tree_AfterSelect);
             // 
             // MessageViewer
             // 
@@ -470,11 +475,11 @@
             this.panel_messages.ResumeLayout(false);
             this.panel_messages.PerformLayout();
             this.panel_messages_content.ResumeLayout(false);
-            this.panel_messages_header.ResumeLayout(false);
-            this.panel_messages_header.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.tabControl2.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -499,9 +504,7 @@
         private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.Panel panel_messages;
         private System.Windows.Forms.Panel panel_messages_content;
-        private System.Windows.Forms.TreeView tree;
         private System.Windows.Forms.Panel panel_messages_header;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.MenuStrip menuStrip1;
@@ -519,7 +522,9 @@
         private System.Windows.Forms.TreeView questTree;
         private System.Windows.Forms.ToolStripMenuItem filterPlayersToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem queryToolStripMenuItem;
-        private System.Windows.Forms.TreeView QueryResultTree;
+        private System.Windows.Forms.TabControl tabControl2;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TreeView tree;
 
 
     }
