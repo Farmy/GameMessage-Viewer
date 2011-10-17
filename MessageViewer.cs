@@ -296,5 +296,17 @@ namespace GameMessageViewer
             }
         }
 
+        private void queryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CustomLinqQuery query = new CustomLinqQuery();
+
+            query.Show(tree.Nodes.Cast<BufferNode>());
+
+            QueryResultTree.Nodes.Clear();
+            foreach (MessageNode mn in query.QueryResult)
+                QueryResultTree.Nodes.Add(mn.Clone());
+
+        }
+
     }
 }

@@ -8,7 +8,7 @@ using System.Drawing;
 
 namespace GameMessageViewer
 {
-    class MessageNode : TreeNode, HighlightingNode
+    public class MessageNode : TreeNode, HighlightingNode
     {
         public GameMessage gameMessage;
         public int mStart;

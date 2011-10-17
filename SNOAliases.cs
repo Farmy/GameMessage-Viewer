@@ -25,7 +25,7 @@ namespace GameMessageViewer
                 foreach (string filename in new string[] { "snos.txt"})
                     foreach (string entry in File.ReadAllLines(filename))
                         if(Aliases.ContainsKey(entry.Split(' ')[0]) == false)
-                            Aliases.Add(entry.Split(' ')[0], entry.Split(' ')[1]);
+                            Aliases.Add(entry.Split(' ')[0], String.Join(" ", entry.Split(' ').Skip(1).ToArray()));
 
                 foreach (string filename in new string[] { "AnimationGroups.txt" })
                     foreach (string entry in File.ReadAllLines(filename))

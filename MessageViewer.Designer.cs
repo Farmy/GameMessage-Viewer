@@ -58,12 +58,14 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.messageFilterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.filterPlayersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.findAllMessagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.trySNOAliasesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.filterPlayersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.queryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.QueryResultTree = new System.Windows.Forms.TreeView();
             this.panel_mainframe.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabActors.SuspendLayout();
@@ -109,6 +111,7 @@
             // 
             // tabActors
             // 
+            this.tabActors.Controls.Add(this.QueryResultTree);
             this.tabActors.Controls.Add(this.actors);
             this.tabActors.Location = new System.Drawing.Point(4, 22);
             this.tabActors.Name = "tabActors";
@@ -145,7 +148,7 @@
             this.questTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.questTree.Location = new System.Drawing.Point(3, 3);
             this.questTree.Name = "questTree";
-            this.questTree.Size = new System.Drawing.Size(661, 486);
+            this.questTree.Size = new System.Drawing.Size(350, 366);
             this.questTree.TabIndex = 2;
             this.questTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.groupedNode_AfterSelect);
             // 
@@ -168,7 +171,7 @@
             this.input.Location = new System.Drawing.Point(3, 3);
             this.input.Name = "input";
             this.input.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.input.Size = new System.Drawing.Size(661, 486);
+            this.input.Size = new System.Drawing.Size(350, 366);
             this.input.TabIndex = 3;
             this.input.Text = "";
             // 
@@ -373,7 +376,8 @@
             this.filterPlayersToolStripMenuItem,
             this.findAllMessagesToolStripMenuItem,
             this.toolStripMenuItem1,
-            this.trySNOAliasesToolStripMenuItem});
+            this.trySNOAliasesToolStripMenuItem,
+            this.queryToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
@@ -384,6 +388,12 @@
             this.messageFilterToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.messageFilterToolStripMenuItem.Text = "Filter messages...";
             this.messageFilterToolStripMenuItem.Click += new System.EventHandler(this.messageFilterToolStripMenuItem_Click);
+            // 
+            // filterPlayersToolStripMenuItem
+            // 
+            this.filterPlayersToolStripMenuItem.Name = "filterPlayersToolStripMenuItem";
+            this.filterPlayersToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.filterPlayersToolStripMenuItem.Text = "Filter players...";
             // 
             // findAllMessagesToolStripMenuItem
             // 
@@ -421,11 +431,19 @@
             this.aboutToolStripMenuItem1.Text = "About...";
             this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.aboutToolStripMenuItem1_Click);
             // 
-            // filterPlayersToolStripMenuItem
+            // queryToolStripMenuItem
             // 
-            this.filterPlayersToolStripMenuItem.Name = "filterPlayersToolStripMenuItem";
-            this.filterPlayersToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
-            this.filterPlayersToolStripMenuItem.Text = "Filter players...";
+            this.queryToolStripMenuItem.Name = "queryToolStripMenuItem";
+            this.queryToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.queryToolStripMenuItem.Text = "Query...";
+            this.queryToolStripMenuItem.Click += new System.EventHandler(this.queryToolStripMenuItem_Click);
+            // 
+            // QueryResultTree
+            // 
+            this.QueryResultTree.Location = new System.Drawing.Point(6, 6);
+            this.QueryResultTree.Name = "QueryResultTree";
+            this.QueryResultTree.Size = new System.Drawing.Size(225, 257);
+            this.QueryResultTree.TabIndex = 15;
             // 
             // MessageViewer
             // 
@@ -500,6 +518,8 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem1;
         private System.Windows.Forms.TreeView questTree;
         private System.Windows.Forms.ToolStripMenuItem filterPlayersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem queryToolStripMenuItem;
+        private System.Windows.Forms.TreeView QueryResultTree;
 
 
     }

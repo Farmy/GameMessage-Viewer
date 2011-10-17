@@ -23,7 +23,7 @@ namespace GameMessageViewer
         private bool expanded = false;
         private TreeView actors; // i know...bad design
         private TreeView quests; // i know...bad design
-        private List<MessageNode> allNodes = new List<MessageNode>();
+        public List<MessageNode> allNodes = new List<MessageNode>();
         private static Dictionary<uint, TreeNode> actorMap = new Dictionary<uint, TreeNode>();
         public readonly string clientHash;
 
