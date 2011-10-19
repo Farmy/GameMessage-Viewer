@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Mooege.Net.GS.Message;
 using Mooege.Net.GS.Message.Definitions.ACD;
 using System.Reflection;
+using System.IO;
 
 
 namespace GameMessageViewer
@@ -57,21 +58,36 @@ namespace GameMessageViewer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Type genericQuery = typeof(QueryTemplate<>);
-            Type concreteQuery = genericQuery.MakeGenericType(((cboEntry)comboBox1.SelectedItem).type);
-            object query = Activator.CreateInstance(concreteQuery);
+            //string f = "";
+            //for (int i = 0; i < 40; i++)
+            //{
+
+                Type genericQuery = typeof(QueryTemplate<>);
+                Type concreteQuery = genericQuery.MakeGenericType(((cboEntry)comboBox1.SelectedItem).type);
+                object query = Activator.CreateInstance(concreteQuery);
 
 
-            try
-            {
-                QueryResult = (IEnumerable<MessageNode>)concreteQuery.GetMethod("Query").Invoke(query, new object[] { mNodes, textBox1.Text });
-                QueryResult.Count(); // Force evaluation
-            }
-            catch (Exception exception)
-            {
-                lblException.Text = exception.Message;
-                return;
-            }
+                try
+                {
+                    QueryResult = (IEnumerable<MessageNode>)concreteQuery.GetMethod("Query").Invoke(query, new object[] { mNodes, textBox1.Text }); 
+                    //QueryResult = (IEnumerable<MessageNode>)concreteQuery.GetMethod("Query").Invoke(query, new object[] { mNodes, "Field2==" + i });
+                    QueryResult.Count(); // Force evaluation
+                }
+                catch (Exception exception)
+                {
+                    lblException.Text = exception.Message;
+                    return;
+                }
+                //string s = i.ToString("X8") + "\r\n";
+                //foreach (MessageNode mn in QueryResult)
+                //    s += (mn.gameMessage as ACDEnterKnownMessage).ActorSNO + ":" + SNOAliases.Aliases[(mn.gameMessage as ACDEnterKnownMessage).ActorSNO.ToString()] + "\r\n";
+                //f += "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n" + s;
+            //}
+
+            //File.WriteAllText("F:\\out.txt", f);
+
+            
+
             
             DialogResult = DialogResult.OK;
             this.Close();

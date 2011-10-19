@@ -152,6 +152,11 @@ namespace GameMessageViewer
             int i = temp.GetCharIndexFromPosition(new Point(e.X, e.Y));
             temp.SelectionStart = i;
             temp.SelectionLength = 1;
+
+            // Apparently, under mono SelectionFont property crashes when nothing is selected
+            if (temp.SelectionType == RichTextBoxSelectionTypes.Empty)
+                return;
+
             if (temp.SelectionFont.Underline)
             {
                 if (output.Cursor != Cursors.Hand)
@@ -167,6 +172,11 @@ namespace GameMessageViewer
 
             temp.SelectionStart = i;
             temp.SelectionLength = 1;
+
+            // Apparently, under mono SelectionFont property crashes when nothing is selected
+            if (temp.SelectionType == RichTextBoxSelectionTypes.Empty)
+                return;
+
             while (temp.SelectionFont.Underline)
                 temp.SelectionStart--;
             temp.SelectionStart++;
@@ -286,6 +296,7 @@ namespace GameMessageViewer
                 actors.Nodes.Clear();
                 tree.Nodes.Clear();
                 BufferNode.Reset();
+                this.Text = Application.ProductName + " - " + Path.GetFileName(ofd.FileName);
 
                 if(Path.GetExtension(ofd.FileName).ToLower().Contains("log"))
                     LoadDump(File.ReadAllText(ofd.FileName));

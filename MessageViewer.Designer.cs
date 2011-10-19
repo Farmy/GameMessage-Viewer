@@ -46,6 +46,9 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.panel_messages = new System.Windows.Forms.Panel();
             this.panel_messages_content = new System.Windows.Forms.Panel();
+            this.tabControl2 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tree = new System.Windows.Forms.TreeView();
             this.panel_messages_header = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.progressBar = new System.Windows.Forms.ProgressBar();
@@ -58,14 +61,11 @@
             this.messageFilterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.filterPlayersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.findAllMessagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.queryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.trySNOAliasesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.queryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabControl2 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tree = new System.Windows.Forms.TreeView();
             this.panel_mainframe.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabActors.SuspendLayout();
@@ -77,10 +77,10 @@
             this.panel_mdump_header.SuspendLayout();
             this.panel_messages.SuspendLayout();
             this.panel_messages_content.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel_mainframe
@@ -278,6 +278,38 @@
             this.panel_messages_content.Size = new System.Drawing.Size(257, 398);
             this.panel_messages_content.TabIndex = 16;
             // 
+            // tabControl2
+            // 
+            this.tabControl2.Controls.Add(this.tabPage1);
+            this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl2.Location = new System.Drawing.Point(0, 0);
+            this.tabControl2.Name = "tabControl2";
+            this.tabControl2.SelectedIndex = 0;
+            this.tabControl2.Size = new System.Drawing.Size(257, 398);
+            this.tabControl2.TabIndex = 0;
+            this.tabControl2.DoubleClick += new System.EventHandler(this.tabControl2_DoubleClick);
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.tree);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(249, 372);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Chronologically";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tree
+            // 
+            this.tree.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tree.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tree.Location = new System.Drawing.Point(3, 3);
+            this.tree.Name = "tree";
+            this.tree.Size = new System.Drawing.Size(243, 366);
+            this.tree.TabIndex = 6;
+            this.tree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tree_AfterSelect);
+            // 
             // panel_messages_header
             // 
             this.panel_messages_header.AutoSize = true;
@@ -372,7 +404,7 @@
             // 
             this.filterPlayersToolStripMenuItem.Name = "filterPlayersToolStripMenuItem";
             this.filterPlayersToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
-            this.filterPlayersToolStripMenuItem.Text = "Filter players...";
+            this.filterPlayersToolStripMenuItem.Text = "Filter players";
             // 
             // findAllMessagesToolStripMenuItem
             // 
@@ -380,6 +412,14 @@
             this.findAllMessagesToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.findAllMessagesToolStripMenuItem.Text = "Find all messages...";
             this.findAllMessagesToolStripMenuItem.Click += new System.EventHandler(this.findAllMessagesToolStripMenuItem_Click);
+            // 
+            // queryToolStripMenuItem
+            // 
+            this.queryToolStripMenuItem.Name = "queryToolStripMenuItem";
+            this.queryToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
+            this.queryToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.queryToolStripMenuItem.Text = "Query...";
+            this.queryToolStripMenuItem.Click += new System.EventHandler(this.queryToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -394,14 +434,6 @@
             this.trySNOAliasesToolStripMenuItem.Name = "trySNOAliasesToolStripMenuItem";
             this.trySNOAliasesToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.trySNOAliasesToolStripMenuItem.Text = "Try SNO Aliases";
-            // 
-            // queryToolStripMenuItem
-            // 
-            this.queryToolStripMenuItem.Name = "queryToolStripMenuItem";
-            this.queryToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-            this.queryToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
-            this.queryToolStripMenuItem.Text = "Query...";
-            this.queryToolStripMenuItem.Click += new System.EventHandler(this.queryToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -418,38 +450,6 @@
             this.aboutToolStripMenuItem1.Text = "About...";
             this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.aboutToolStripMenuItem1_Click);
             // 
-            // tabControl2
-            // 
-            this.tabControl2.Controls.Add(this.tabPage1);
-            this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl2.Location = new System.Drawing.Point(0, 0);
-            this.tabControl2.Name = "tabControl2";
-            this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(257, 398);
-            this.tabControl2.TabIndex = 0;
-            this.tabControl2.DoubleClick += new System.EventHandler(this.tabControl2_DoubleClick);
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.tree);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(249, 372);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tree
-            // 
-            this.tree.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tree.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tree.Location = new System.Drawing.Point(3, 3);
-            this.tree.Name = "tree";
-            this.tree.Size = new System.Drawing.Size(243, 366);
-            this.tree.TabIndex = 6;
-            this.tree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tree_AfterSelect);
-            // 
             // MessageViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -460,7 +460,7 @@
             this.KeyPreview = true;
             this.Name = "MessageViewer";
             this.Padding = new System.Windows.Forms.Padding(10);
-            this.Text = "GS Message Viewer";
+            this.Text = "GameMessage Viewer";
             this.panel_mainframe.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabActors.ResumeLayout(false);
@@ -475,11 +475,11 @@
             this.panel_messages.ResumeLayout(false);
             this.panel_messages.PerformLayout();
             this.panel_messages_content.ResumeLayout(false);
+            this.tabControl2.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.tabControl2.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

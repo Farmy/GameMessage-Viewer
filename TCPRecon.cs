@@ -64,7 +64,7 @@ namespace GameMessageViewer
         {
             if (!closed)
             {
-                //data_out_file.Close();
+                data_out_file.Flush();
                 reset_tcp_reassembly();
                 closed = true;
             }
